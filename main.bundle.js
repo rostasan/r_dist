@@ -38,11 +38,11 @@ var AboutRoutingModule = (function () {
 AboutRoutingModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forChild([
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
                 { path: 'about', component: __WEBPACK_IMPORTED_MODULE_2__about_component__["a" /* AboutComponent */] }
             ])
         ],
-        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]]
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
     })
 ], AboutRoutingModule);
 
@@ -71,7 +71,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/about/about.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-panel\">\n\n\n      <p>To DO list</p>\n\n      <h2>Things left to do</h2>\n      <ul>\n        <li>\n          Remove materials from project DONE\n        </li>\n        <li>\n          Re-write content\n        </li>\n        <li>\n      fix CSS simplyfy\n        </li>\n        <li>\n      Add CSS animations\n        </li>\n        </ul>\n</div>\n<div class=\"content-panel\">\n          <h1> \n          Tasks to complete\n          </h1>\n\n          <ul *ngFor=\"let task of tasks\">\n            <li>{{task.title}} <button>{{task.status}}</button></li>\n          </ul>\n</div>"
+module.exports = "<div class=\"content-panel\">\r\n\r\n\r\n\r\n\r\n<div class=\"content-panel\">\r\n          <h1>\r\n          Firebase data\r\n          </h1>\r\n          <button class=\"btn btn-primary btn-block btn-mini\" type=\"button\" name=\"button\" (click)=\"openDialog()\">Add Todo (not working)</button>\r\n\r\n      <div class=\"container\" *ngIf=\"tasks.length > 0\">\r\n\r\n\r\n          <div *ngIf=\"appState == 'extend'\">\r\n              <div class=\"\" *ngFor=\"let task of tasks\">\r\n                <div class=\"\" *ngIf=\"task.$key == activeKey\">\r\n                    <div class=\"row\">\r\n                      <div class=\"\">\r\n                        {{task.details}}\r\n\r\n                        https://www.youtube.com/watch?v=QMQbAoTLJX8\r\n                      </div>\r\n                    </div>\r\n                </div>\r\n              </div>\r\n              \r\n              <div class=\"\">\r\n                <button type=\"button\" class=\"btn btn-outline-secondary btn-sm pull-right\" name=\"close\" (click)=\"changeState('default', task.$state)\">close</button>\r\n              </div>\r\n          </div>\r\n          <ul *ngFor=\"let task of tasks\">\r\n            <div *ngIf=\"task.$state == activeKey\">\r\n                <li>{{task.title}}  <button (click)=\"changeState('extend', task.$key)\" class=\"btn btn-success\">{{task.status}}</button></li>\r\n            </div>   \r\n          </ul>\r\n      </div>\r\n</div>\r\n<span class=\"pull-right\">\r\n\r\n\r\n</span>\r\n"
 
 /***/ }),
 
@@ -102,18 +102,24 @@ var AboutComponent = (function () {
     }
     AboutComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._firebaseService.getTasks().subscribe(function (tasks) {
+        this._firebaseService.getTasks()
+            .subscribe(function (tasks) {
             _this.tasks = tasks;
         });
+    };
+    AboutComponent.prototype.changeState = function (state, key) {
+        if (key) {
+            this.activeKey = key;
+        }
+        this.appState = state;
     };
     return AboutComponent;
 }());
 AboutComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Component */])({
-        selector: 'sd-about',
+        selector: 'app-sd-about',
         template: __webpack_require__("../../../../../src/app/about/about.component.html"),
         styles: [__webpack_require__("../../../../../src/app/about/about.component.css")],
-        providers: [__WEBPACK_IMPORTED_MODULE_0__shared_firebase_firebase_service__["a" /* FirebaseService */]]
     }),
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* Injectable */])() // <<<=== required if the constructor has parameters
     ,
@@ -134,12 +140,14 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__about_component__ = __webpack_require__("../../../../../src/app/about/about.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__about_routing_module__ = __webpack_require__("../../../../../src/app/about/about-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tasks_component__ = __webpack_require__("../../../../../src/app/about/tasks.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -152,12 +160,50 @@ var AboutModule = (function () {
 AboutModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__about_routing_module__["a" /* AboutRoutingModule */]],
-        declarations: [__WEBPACK_IMPORTED_MODULE_2__about_component__["a" /* AboutComponent */]],
-        exports: [__WEBPACK_IMPORTED_MODULE_2__about_component__["a" /* AboutComponent */]]
+        declarations: [__WEBPACK_IMPORTED_MODULE_2__about_component__["a" /* AboutComponent */], __WEBPACK_IMPORTED_MODULE_4__tasks_component__["a" /* tasksComponent */]],
+        exports: [__WEBPACK_IMPORTED_MODULE_2__about_component__["a" /* AboutComponent */], __WEBPACK_IMPORTED_MODULE_4__tasks_component__["a" /* tasksComponent */]],
+        entryComponents: [__WEBPACK_IMPORTED_MODULE_4__tasks_component__["a" /* tasksComponent */]]
     })
 ], AboutModule);
 
 //# sourceMappingURL=about.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/about/tasks.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return tasksComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var tasksComponent = (function () {
+    function tasksComponent() {
+    }
+    return tasksComponent;
+}());
+tasksComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-tasks',
+        template: "\n      <h1>Add Tasks</h1>\n  ",
+        styles: []
+    })
+    // https://medium.com/@ladyleet/popups-modals-and-navigation-using-angular-material-2-components-in-your-angular-2-project-faf510dbcdee
+    // tasks modal from medium
+    ,
+    __metadata("design:paramtypes", [])
+], tasksComponent);
+
+//# sourceMappingURL=tasks.component.js.map
 
 /***/ }),
 
@@ -184,9 +230,9 @@ var AppRoutingModule = (function () {
 AppRoutingModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forRoot([])
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forRoot([])
         ],
-        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]]
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
     })
 ], AppRoutingModule);
 
@@ -202,7 +248,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "\r\n\r\n/* Reset */\r\nhtml, body, div {\r\n  border: 0;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n\r\n.component {\r\n  background-color: rgba(0, 0, 0, .0)\r\n}\r\n\r\n/* Start Story x-large Break Point */\r\n\r\n@media (min-width: 1200px){\r\n  .title-story {\r\n    display: inline-block;\r\n  }\r\n\r\n\r\n  .content-panel {\r\n    box-shadow: 10px 10px 5px rgba(0, 0, 0, .5);\r\n    background: #fff;\r\n    border-radius: 25px;\r\n    max-width: 80%;\r\n    margin: 10%;\r\n  }\r\n\r\n\r\n  .story  {\r\n      font-family: \"Courier New\", Courier, \"Lucida Sans Typewriter\", \"Lucida Typewriter\", monospace;\r\n      padding: 20px;\r\n      font-variant: normal;\r\n      font-style: normal;\r\n      font-weight: 400;\r\n      font-size: 20px;\r\n      line-height:  1.2em;\r\n  }\r\n  .panel-margin {\r\n    margin-top: 20px;\r\n    margin-bottom: 20px;\r\n  }\r\n\r\n   .modal-dialog {\r\n     width: 90%;\r\n     height: inherit;\r\n     display: block;\r\n     padding-top: 0px;\r\n     margin-left: auto;\r\n     margin-right: auto;\r\n     border-radius: 30px;\r\n     box-shadow: 0px 0px 5px 10px rgba(255, 255, 255, 0.7);\r\n   }\r\n   .modal-content {\r\n        border-radius: 30px;\r\n   }\r\n  .img-lightBox-1 {\r\n        border-radius: 30px;\r\n        display: inline-block;\r\n        z-index: 0;\r\n        left: 0;\r\n        top: 0;\r\n        width: 100%;\r\n        height: 100%;\r\n  }\r\n\r\n}\r\n\r\n\r\n\r\n\r\n/*  Start Story large Break Point */\r\n\r\n@media (min-width: 992px) and (max-width: 1199px){\r\n  .title-story {\r\n    display: inline-block;\r\n  }\r\n  .content-panel, ul, lin {\r\n\r\n    background: #fff;\r\n    border-radius: 20px;\r\n  }\r\n  .story {\r\n      font-family: \"Courier New\", Courier, \"Lucida Sans Typewriter\", \"Lucida Typewriter\", monospace;\r\n      padding: 20px;\r\n      font-variant: normal;\r\n      font-style: normal;\r\n      font-weight: 400;\r\n      font-size:16px;\r\n      line-height:  1.2em;\r\n  }\r\n  .panel-margin {\r\n    margin-top: 20px;\r\n    margin-bottom: 20px;\r\n  }\r\n\r\n}\r\n\r\n /* Start Story medium */\r\n@media (min-width: 768px) and (max-width: 991px){\r\n  .panel-margin {\r\n    margin-top: 20px;\r\n    margin-bottom: 2em;\r\n  }\r\n  .content-panel {\r\n    margin-bottom: 10px;\r\n    background: #fff;\r\n    border-radius: 15px;\r\n  }\r\n  .story {\r\n      font-family: \"Courier New\", Courier, \"Lucida Sans Typewriter\", \"Lucida Typewriter\", monospace;\r\n      padding: 20px;\r\n      font-variant: normal;\r\n      font-style: normal;\r\n      font-weight: 400;\r\n      font-size: 14px;\r\n      line-height:  1.2em;\r\n  }\r\n}\r\n /* End story Medium */\r\n\r\n\r\n /* Start Story Small */\r\n@media (min-width: 768px) and (max-width: 991px){\r\n  .content-panel {\r\n    background: #fff;\r\n    border-radius: 10px;\r\n    margin-bottom: 2em;\r\n  }\r\n  .story {\r\n      font-family: \"Courier New\", Courier, \"Lucida Sans Typewriter\", \"Lucida Typewriter\", monospace;\r\n      padding: 20px;\r\n      font-variant: normal;\r\n      font-style: normal;\r\n      font-weight: 400;\r\n      font-size: 12px;\r\n      line-height:  1.2em;\r\n  }\r\n}\r\n /* End Story small */\r\n\r\n /* Start Story Small */\r\n@media (max-width: 767px){\r\n  .content-panel {\r\n    background: #fff;\r\n    border-radius: 10px;\r\n    margin-bottom: 2em;\r\n  }\r\n  .story {\r\n      font-family: \"Courier New\", Courier, \"Lucida Sans Typewriter\", \"Lucida Typewriter\", monospace;\r\n      padding: 20px;\r\n      font-variant: normal;\r\n      font-style: normal;\r\n      font-weight: 400;\r\n      font-size: 12px;\r\n      line-height:  1.2em;\r\n  }\r\n}\r\n\r\n /* End Story small */\r\n\r\nhtml, body {\r\n  height: 100%;\r\n  width: 100%;\r\n}\r\n\r\nbody {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n}\r\n\r\n/* Box-sizing border-box */\r\n*, *:before, *:after {\r\n  box-sizing: border-box;\r\n}\r\n\r\n/* Set up a default font and some padding to provide breathing room */\r\nbody {\r\n\r\n\r\n  -webkit-font-smoothing: antialiased;\r\n  -moz-osx-font-smoothing: grayscale;\r\n}\r\nbody {\r\n  background-image: url(" + __webpack_require__("../../../../../src/assets/images/background/BWEtaCarNeb.png") + ");\r\n  background-attachment: fixed;\r\n  background-position: center;\r\n  background-repeat: no-repeat;\r\n  background-size: cover;\r\n\r\n}\r\n\r\n\r\n\r\n/*p {\r\n  font-weight: 400;\r\n  letter-spacing: 0.01em;\r\n  line-height: 20px;\r\n  margin-bottom: 1em;\r\n  margin-top: 1em;\r\n}*/\r\n\r\nul {\r\n  margin: 10px 0 0;\r\n  padding: 0 0 0 20px;\r\n}\r\n\r\nli {\r\n  font-weight: 400;\r\n  margin-top: 4px;\r\n}\r\n\r\ninput {\r\n  border: 1px solid #106cc8;\r\n  font-size: 14px;\r\n  height: 40px;\r\n  outline: none;\r\n  padding: 8px;\r\n}\r\n\r\nbutton {\r\n  background-color: #106cc8;\r\n  border-style: none;\r\n  color: rgba(255, 255, 255, 0.87);\r\n  cursor: pointer;\r\n  display: inline-block;\r\n  font-size: 14px;\r\n  height: 40px;\r\n  padding: 8px 18px;\r\n  text-decoration: none;\r\n}\r\n\r\nbutton:hover {\r\n  background-color: #28739e;\r\n}\r\n", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -255,6 +301,9 @@ var AppComponent = (function () {
             _this.stories = stories;
         });
     };
+    AppComponent.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
+    };
     return AppComponent;
 }());
 AppComponent = __decorate([
@@ -284,22 +333,26 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularfire2__ = __webpack_require__("../../../../angularfire2/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_database__ = __webpack_require__("../../../../angularfire2/database.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__ = __webpack_require__("../../../../angularfire2/auth.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__about_about_module__ = __webpack_require__("../../../../../src/app/about/about.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__home_home_module__ = __webpack_require__("../../../../../src/app/home/home.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__prose_prose_module__ = __webpack_require__("../../../../../src/app/prose/prose.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2__ = __webpack_require__("../../../../angularfire2/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_database__ = __webpack_require__("../../../../angularfire2/database.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_angularfire2_auth__ = __webpack_require__("../../../../angularfire2/auth.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__about_about_module__ = __webpack_require__("../../../../../src/app/about/about.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__home_home_module__ = __webpack_require__("../../../../../src/app/home/home.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__prose_prose_module__ = __webpack_require__("../../../../../src/app/prose/prose.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__login_login_module__ = __webpack_require__("../../../../../src/app/login/login.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -325,22 +378,24 @@ AppModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_4__app_routing_module__["a" /* AppRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_11__about_about_module__["a" /* AboutModule */],
-            __WEBPACK_IMPORTED_MODULE_12__home_home_module__["a" /* HomeModule */],
-            __WEBPACK_IMPORTED_MODULE_14__prose_prose_module__["a" /* ProseModule */],
+            __WEBPACK_IMPORTED_MODULE_12__about_about_module__["a" /* AboutModule */],
+            __WEBPACK_IMPORTED_MODULE_13__home_home_module__["a" /* HomeModule */],
+            __WEBPACK_IMPORTED_MODULE_15__prose_prose_module__["a" /* ProseModule */],
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-            __WEBPACK_IMPORTED_MODULE_6_angularfire2__["a" /* AngularFireModule */].initializeApp(__WEBPACK_IMPORTED_MODULE_9__environments_environment__["a" /* environment */].firebase),
-            __WEBPACK_IMPORTED_MODULE_7_angularfire2_database__["b" /* AngularFireDatabaseModule */],
-            __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__["a" /* AngularFireAuthModule */],
-            __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap__["a" /* AlertModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_13__shared_shared_module__["a" /* SharedModule */].forRoot()
+            __WEBPACK_IMPORTED_MODULE_16__login_login_module__["a" /* LoginModule */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_7_angularfire2__["a" /* AngularFireModule */].initializeApp(__WEBPACK_IMPORTED_MODULE_10__environments_environment__["a" /* environment */].firebase),
+            __WEBPACK_IMPORTED_MODULE_8_angularfire2_database__["b" /* AngularFireDatabaseModule */],
+            __WEBPACK_IMPORTED_MODULE_9_angularfire2_auth__["a" /* AngularFireAuthModule */],
+            __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap__["a" /* AlertModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_14__shared_shared_module__["a" /* SharedModule */].forRoot()
         ],
         providers: [{
                 provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["a" /* APP_BASE_HREF */],
                 useValue: '',
             }],
-        declarations: [__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */]],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */]]
+        declarations: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]],
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
@@ -373,11 +428,11 @@ var HomeRoutingModule = (function () {
 HomeRoutingModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forChild([
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
                 { path: '', component: __WEBPACK_IMPORTED_MODULE_2__home_component__["a" /* HomeComponent */] }
             ])
         ],
-        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]]
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
     })
 ], HomeRoutingModule);
 
@@ -393,7 +448,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host {\n  display: block;\n  padding: 0 16px;\n}\n\ninput {\n  width: 250px;\n}\n\nul {\n  list-style-type: none;\n  padding: 0 0 0 8px;\n}\n", ""]);
+exports.push([module.i, "\n", ""]);
 
 // exports
 
@@ -406,7 +461,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>Howdy! Here's a list of awesome computer scientists. Do you know any others? Add to the list yourself.</p>\n\n<form (submit)=\"addName()\">\n  <input [(ngModel)]=\"newName\" name=\"newName\" placeholder=\"Awesome Computer Scientist\">\n  <button type=\"submit\">Add</button>\n</form>\n\n<ul>\n  <li *ngFor=\"let name of names\">{{ name }}</li>\n</ul>\n"
+module.exports = "<app-login *ngIf=false></app-login>\n\n\n<div class=\"container-fluid container-padding cloak-flicker\">\n  <div class=\"content-panel panel-default\">\n      <h1>Rostasan</h1>\n        <p>\n          Welcome to my site. Currently you will find some fan fiction for Star Citizen that I will update on a regular basis.\n          Check under the Prose link for details. In the future I will add screenplays, shorts, and other examples of my writing.\n          This site was built using Angular-cli and Firebase. I will be adding features to the site such as a login to hone my\n          skillsets. So things may change frequently.\n       </p>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -416,57 +471,19 @@ module.exports = "<p>Howdy! Here's a list of awesome computer scientists. Do you
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomeComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_name_list_name_list_service__ = __webpack_require__("../../../../../src/app/shared/name-list/name-list.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
 
 /**
  * This class represents the lazy loaded HomeComponent.
  */
 var HomeComponent = (function () {
-    /**
-     * Creates an instance of the HomeComponent with the injected
-     * NameListService.
-     *
-     * @param {NameListService} nameListService - The injected NameListService.
-     */
-    function HomeComponent(nameListService) {
-        this.nameListService = nameListService;
-        this.newName = '';
-        this.names = [];
+    function HomeComponent() {
     }
-    /**
-     * Get the names OnInit
-     */
-    HomeComponent.prototype.ngOnInit = function () {
-        this.getNames();
-    };
-    /**
-     * Handle the nameListService observable
-     */
-    HomeComponent.prototype.getNames = function () {
-        var _this = this;
-        this.nameListService.get()
-            .subscribe(function (names) { return _this.names = names; }, function (error) { return _this.errorMessage = error; });
-    };
-    /**
-     * Pushes a new name onto the names array
-     * @return {boolean} false to prevent default form submit behavior to refresh the page.
-     */
-    HomeComponent.prototype.addName = function () {
-        // TODO: implement nameListService.post
-        this.names.push(this.newName);
-        this.newName = '';
-        return false;
-    };
     return HomeComponent;
 }());
 HomeComponent = __decorate([
@@ -474,11 +491,9 @@ HomeComponent = __decorate([
         selector: 'sd-home',
         template: __webpack_require__("../../../../../src/app/home/home.component.html"),
         styles: [__webpack_require__("../../../../../src/app/home/home.component.css")],
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_name_list_name_list_service__["a" /* NameListService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_name_list_name_list_service__["a" /* NameListService */]) === "function" && _a || Object])
+    })
 ], HomeComponent);
 
-var _a;
 //# sourceMappingURL=home.component.js.map
 
 /***/ }),
@@ -493,12 +508,14 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_routing_module__ = __webpack_require__("../../../../../src/app/home/home-routing.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_name_list_name_list_service__ = __webpack_require__("../../../../../src/app/shared/name-list/name-list.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login_module__ = __webpack_require__("../../../../../src/app/login/login.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -511,7 +528,7 @@ var HomeModule = (function () {
 }());
 HomeModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_2__home_routing_module__["a" /* HomeRoutingModule */], __WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */]],
+        imports: [__WEBPACK_IMPORTED_MODULE_2__home_routing_module__["a" /* HomeRoutingModule */], __WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_5__login_login_module__["a" /* LoginModule */]],
         declarations: [__WEBPACK_IMPORTED_MODULE_1__home_component__["a" /* HomeComponent */]],
         exports: [__WEBPACK_IMPORTED_MODULE_1__home_component__["a" /* HomeComponent */]],
         providers: [__WEBPACK_IMPORTED_MODULE_4__shared_name_list_name_list_service__["a" /* NameListService */]]
@@ -519,6 +536,265 @@ HomeModule = __decorate([
 ], HomeModule);
 
 //# sourceMappingURL=home.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/auth-form/auth-form.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/auth-form/auth-form.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n  <form (ngSubmit)=\"onSubmit(form.value)\" #form=\"ngForm\">\n    <ng-content select=\"h3\"></ng-content>\n    <label>\n      Email address\n      <input type=\"email\" name=\"email\" ngModel>\n    </label>\n    <label>\n      Password\n      <input type=\"password\" name=\"password\" ngModel>\n    </label>\n    <ng-content select=\"button\"></ng-content>\n  </form>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/auth-form/auth-form.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthFormComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AuthFormComponent = (function () {
+    function AuthFormComponent() {
+        this.submitted = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]();
+    }
+    AuthFormComponent.prototype.onSubmit = function (value) {
+        this.submitted.emit(value);
+    };
+    AuthFormComponent.prototype.ngOnInit = function () {
+    };
+    return AuthFormComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]) === "function" && _a || Object)
+], AuthFormComponent.prototype, "submitted", void 0);
+AuthFormComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-authform',
+        template: __webpack_require__("../../../../../src/app/login/auth-form/auth-form.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/login/auth-form/auth-form.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], AuthFormComponent);
+
+var _a;
+//# sourceMappingURL=auth-form.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/auth-form/auth-form.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthFormModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__auth_form_component__ = __webpack_require__("../../../../../src/app/login/auth-form/auth-form.component.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+var AuthFormModule = (function () {
+    function AuthFormModule() {
+    }
+    return AuthFormModule;
+}());
+AuthFormModule = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
+        declarations: [
+            __WEBPACK_IMPORTED_MODULE_3__auth_form_component__["a" /* AuthFormComponent */]
+        ],
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_2__angular_common__["b" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormsModule */]
+        ],
+        exports: [
+            __WEBPACK_IMPORTED_MODULE_3__auth_form_component__["a" /* AuthFormComponent */]
+        ]
+    })
+], AuthFormModule);
+
+//# sourceMappingURL=auth-form.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login-routing.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var LoginRoutingModule = (function () {
+    function LoginRoutingModule() {
+    }
+    return LoginRoutingModule;
+}());
+LoginRoutingModule = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
+                { path: 'login', component: __WEBPACK_IMPORTED_MODULE_2__login_component__["a" /* LoginComponent */] }
+            ])
+        ],
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
+    })
+], LoginRoutingModule);
+
+//# sourceMappingURL=login-routing.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"content-panel\">\n  <app-authform\n    (submitted)=\"createUser($event)\">\n    <h3>Create account</h3>\n  <button type=\"submit\">\n  Join Us\n  </button>\n  </app-authform>\n  <app-authform\n    (submitted)=\"loginUser($event)\">\n    <h3>Login</h3>\n    <button type=\"submit\">\n    Login\n    </button>\n  </app-authform>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var LoginComponent = (function () {
+    function LoginComponent() {
+    }
+    LoginComponent.prototype.createUser = function (user) {
+        console.log('Create account', user);
+    };
+    LoginComponent.prototype.loginUser = function (user) {
+        console.log('Login', user);
+    };
+    LoginComponent.prototype.ngOnInit = function () {
+    };
+    return LoginComponent;
+}());
+LoginComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-login',
+        template: __webpack_require__("../../../../../src/app/login/login.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/login/login.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], LoginComponent);
+
+//# sourceMappingURL=login.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__auth_form_auth_form_module__ = __webpack_require__("../../../../../src/app/login/auth-form/auth-form.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__login_routing_module__ = __webpack_require__("../../../../../src/app/login/login-routing.module.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+var LoginModule = (function () {
+    function LoginModule() {
+    }
+    return LoginModule;
+}());
+LoginModule = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_3__auth_form_auth_form_module__["a" /* AuthFormModule */],
+            __WEBPACK_IMPORTED_MODULE_4__login_routing_module__["a" /* LoginRoutingModule */]
+        ],
+        declarations: [__WEBPACK_IMPORTED_MODULE_2__login_component__["a" /* LoginComponent */]],
+        exports: [__WEBPACK_IMPORTED_MODULE_2__login_component__["a" /* LoginComponent */]]
+    })
+], LoginModule);
+
+//# sourceMappingURL=login.module.js.map
 
 /***/ }),
 
@@ -567,15 +843,14 @@ var ChapterRoutingModule = (function () {
 ChapterRoutingModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forChild([
-                { path: 'prose/:chapter.StoryURL', component: __WEBPACK_IMPORTED_MODULE_2__chapter_component__["a" /* ChapterComponent */] }
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
+                { path: 'chapters/:Chapter', component: __WEBPACK_IMPORTED_MODULE_2__chapter_component__["a" /* ChapterComponent */] }
             ])
         ],
-        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]]
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
     })
 ], ChapterRoutingModule);
 
-// http://blog.mgechev.com/2015/12/30/angular2-router-dynamic-route-config-definition-creation/ 
 //# sourceMappingURL=chapter-routing.module.js.map
 
 /***/ }),
@@ -601,7 +876,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/prose/chapter/chapter.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n\n       <button (click)=\"goBack()\" md-no-ink class=\"md-primary\">Back</button>\n\n\n\n<div class=\"container-fluid container-padding\">\n\n\n\n\n      <div class=\"title-story content-panel panel-margin\">\n        <h1>{{stories[0].Chapters[0].Chapter}}</h1>\n\n              {{stories[0].Chapters[0].title}}\n\n      </div>\n\n      <div class=\"content-panel story panel-margin\">\n      <p>\n            Danica taps away at a machine trying to squeeze truth out of complex electronics like sap from a giant maple, but not any sort of absolute truth. She seeks the inner truth felt by all sentient beings of a given demographic, in a particular range of income, that would make the story easy to sell to the Networks. Each twitch of her delicately manicured fingers, changes the footage scrolling by. The scene flickers in and out of focus, she tries toggles the three dimensional playback, centralized VR, holographic, then she stops. Her bored expression changing to one of sheer delight. She restarts the footage.<br />\n            “I’ve got it, get in here,” she commands while simultaneously checking her appearance in the reflection of a nearby black monitor. <br />\n            “I can’t,” Walter replies over the com. While the ship was not large, the back control room was so isolated that you could be going through a type 4 jump point and not even notice. <br />\n            “Get in here now Jellyfish!” She rewinds the footage, a young girl, dirty white clothes, bloody, dazed walks through a scene of devastation. <br />\n            Walter looks around at the surrounding space, the cockpit design gave a full view, thrust into the void, look straight up and you see stars, left, right, between your feet. The view in the ship was superb, but Walter didn’t like the idea of leaving the cockpit unless they were docked. He disengages the drives and tries to make his trajectory as neutral as possible, even though there probably wasn’t a ship for a million kilometers.\n      </p>\n    </div>\n\n    <div class=\"content-panel story panel-margin\">\n\n      <p>\n          The ship slides into a horizontal formation, bringing Walters cockpit seat alongside the one that was previously below. He pulls his way to the back of the ship in microgravity . He sees Danica still editing the footage, but frowns when he sees what she’s doing.<br />\n          “That won’t work.”<br />\n          “Of course it will, the framing is perfect.”<br />\n          “Framing? Framing, I got a pure multidimensional shot, with all subjects in the proper orientation and you cut it down to a window.” Walter throws up his arms.<br />\n          “Shut up Walter, I need you to open up a feed to the station, I want to upload this before we miss the news.”<br />\n          “Make the news?”<br />\n     \n          “Yes, make the sector news and if possible all the way to Earth.”<br />\n          “Dani this is a long form, there is no way the network will pick it up.”<br />\n          “I’ve already made the adjustments, were going to go live here.” Danica turns and pulls down a computer station and powers it up.<br />\n          “I’ve seen the footage too Dani, I don’t think this is live material. Dead and missing refugees won’t sell.”<br />\n         \n          “That’s not your problem.” Dani half listens to Walter as a holographic image appears from the system she powered up. The image appears to be the solar system. <br />\n          <img src=\"..\\..\\..\\assets\\images\\prose\\danica-star\\1.jpg\" alt=\"\" class=\"img-1 img-rounded\" ng-model=\"items[0]\" ng-click=\"light.open()\">\n          Walter pulls himself over to the transmitter station and fires it up, the antenna extends and he starts to see a connection finalizing the authorization. A warning appears, System Emergency channel given top priority, all other traffic will be limited.<br />\n          “We have a problem.”<br />\n          </p>\n\n      </div>\n      <div class=\"content-panel story panel-margin\">\n        <p>\n          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n        </p>\n        <p>\n          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n          <img src=\"..\\..\\..\\assets\\images\\prose\\danica-star\\2.jpg\" alt=\"\" class=\"img-2 img-rounded img-responsive\" ng-click=\"light.open()\">\n          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n        </p>\n      </div>\n      <div class=\"content-panel story panel-margin\">\n        <p>\n          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n        </p>\n        <p>\n          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n        </p>\n<p>  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n              <img src=\"..\\..\\..\\assets\\images\\prose\\danica-star\\3.jpg\" alt=\"\" class=\"img-rounded img-3\" ng-click=\"light.open()\">\n  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n\n\n    </p>\n      </div>\n\n\n</div>\n\n<script type=\"text/ng-template\" class=\"\" id=\"modalimg.html\">\n    <div>\n        <img src=\"..\\..\\..\\assets\\images\\prose\\danica-star\\4.jpg\" alt=\"\" ng-click=\"light.close()\" class=\"img-lightBox-1\">\n  </div>\n</script>\n"
+module.exports = "<!-- The <ng-template> element is a good choice for dynamic components because it doesn't render any additional output. -->\r\n\r\n<div class=\"container content-panel\">\r\n   <!-- <button (click)=\"goBack('./')\" md-no-ink class=\"md-primary\">Back</button> -->\r\n \r\n <ul>\r\n  <li *ngFor=\"let chapter of chapters[0]\">\r\n    <a href=\"\" (click)=\"loadView(chapter)\">  </a>\r\n    {{chapter.text}}\r\n  \r\n  </li>\r\n</ul>\r\n\r\n</div>\r\n"
 
 /***/ }),
 
@@ -612,7 +887,7 @@ module.exports = "\n\n       <button (click)=\"goBack()\" md-no-ink class=\"md-p
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChapterComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_prose_prose_service__ = __webpack_require__("../../../../../src/app/shared/prose/prose.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_firebase_firebase_service__ = __webpack_require__("../../../../../src/app/shared/firebase/firebase.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -626,7 +901,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
+ // required to use the Back f
 var ChapterComponent = (function () {
     /**
      * Creates an instance of the ChapterComponent with the injected
@@ -634,36 +909,18 @@ var ChapterComponent = (function () {
      *
      * @param {ProseService} ProseService - The injected ProseService.
      */
-    function ChapterComponent(proseService, route, location) {
+    function ChapterComponent(proseService, location, _firebaseService) {
         this.proseService = proseService;
-        this.route = route;
         this.location = location;
-        this.stories = [];
+        this._firebaseService = _firebaseService;
     }
-    /**
-     * Get the Stories
-     */
     ChapterComponent.prototype.ngOnInit = function () {
-        this.getStories();
-        //   this.route.params
-        //       .map(params => params['Chapters'])
-        //       .subscribe((Chapters) => {
-        //           this.proseService.getChapters(Chapters)
-        //               .subscribe(Chapters => {
-        //                  this.Chapters = Chapters;
-        //               })
-        //       })
-    };
-    /**
-     * Handle the proseService observable
-     */
-    ChapterComponent.prototype.getStories = function () {
         var _this = this;
-        this.proseService.get()
-            .subscribe(function (Chapters) { return _this.stories = Chapters; }, 
-        // stories => this.stories = stories,
-        // chapter => console.log(chapter),
-        function (error) { return _this.errorMessage = error; });
+        this._firebaseService.getChapters()
+            .subscribe(function (chapters) {
+            console.log(chapters[0]);
+            _this.chapters = chapters;
+        });
     };
     ChapterComponent.prototype.goBack = function () {
         this.location.back();
@@ -672,11 +929,11 @@ var ChapterComponent = (function () {
 }());
 ChapterComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
-        selector: 'chapters',
+        selector: 'app-chapters',
         template: __webpack_require__("../../../../../src/app/prose/chapter/chapter.component.html"),
         styles: [__webpack_require__("../../../../../src/app/prose/chapter/chapter.component.css")],
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_prose_prose_service__["a" /* ProseService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_prose_prose_service__["a" /* ProseService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_prose_prose_service__["a" /* ProseService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_prose_prose_service__["a" /* ProseService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__shared_firebase_firebase_service__["a" /* FirebaseService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_firebase_firebase_service__["a" /* FirebaseService */]) === "function" && _c || Object])
 ], ChapterComponent);
 
 var _a, _b, _c;
@@ -745,11 +1002,11 @@ var ProseRoutingModule = (function () {
 ProseRoutingModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forChild([
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
                 { path: 'prose', component: __WEBPACK_IMPORTED_MODULE_2__prose_component__["a" /* ProseComponent */] }
             ])
         ],
-        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]]
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
     })
 ], ProseRoutingModule);
 
@@ -778,7 +1035,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/prose/prose.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n\n\n\n\n<div class=\"container-fluid container-padding cloak-flicker\">\n\n  <div class=\"row\" ui-view>\n    <h1>Story Page</h1>\n    <h3>This is a list of stories available to read.</h3>\n\n            <div class=\"content-panel panel-default\">\n                <h1>Prose</h1>\n              Here are a list of Stories, treatments, and fan fiction. Not much to see here yet, but I'll add\n              content.\n                <!-- <h2>Duke Dogewalker<acme-malarkey extra-values=\"['much story', 'Characters development', 'Much ado about bacon!']\"></acme-malarkey></h2> -->\n\n                <ul class=\"container\">\n                  <li *ngFor=\"let story of stories; let i = index\">\n                     <!-- [routerLink]=\"['/chapter', story.prose.Chapters.Chapter]\" -->\n                      <div class=\"module hero\">\n                        <h3>\n                              <!-- <a [routerLink]=\"['/chapter']\" [routerLinkActive]=\"['router-link-active']\" [routerLinkActiveOptions]=\"{exact:true}\">Chapter</a> -->\n\n                              <a href=\"#\" [routerLink]=\"['./' + story.StoryURL ]\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\"{{story.title}}\"</a>\n                              <!-- <ul>\n                                <li *ngFor=\"let chapter of stories.Chapters\">\n                                  {{chapter.Chapters}}\n                                </li>\n                                <a [routerLink]=\"['/book/'+book.id]\">\n                              </ul> -->\n\n\n                        </h3>\n                      </div>\n                  </li>\n                </ul>\n\n            </div>\n\n\n      </div>\n</div>\n<br />\n<!-- Chapters view -->\n`\n"
+module.exports = "<div class=\"container-fluid container-padding cloak-flicker\">\n    <div class=\"row\">\n        <div class=\"content-panel panel-default\">\n           <h1>Prose</h1>\n              Here are a list of Stories, treatments, and fan fiction. Not much to see here yet, but I'll add\n              content as I go.\n                <ul class=\"container\">\n                  <li *ngFor=\"let story of stories\">\n                      <div class=\"module hero\">\n                        <h3>\n                              <a \n                                [routerLink]=\"['/chapters', story.StoryURL]\" \n                                routerLinkActive=\"active\" \n                                [routerLinkActiveOptions]=\"{exact:true}\">\"{{story.title}}\"\n                              </a>\n                        </h3>\n                      </div>\n                  </li>\n<!-- <app-chapters></app-chapters> -->\n                </ul>\n        </div>\n    </div>\n</div>\n\n\n"
 
 /***/ }),
 
@@ -806,7 +1063,8 @@ var ProseComponent = (function () {
     }
     ProseComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._firebaseService.getStories().subscribe(function (stories) {
+        this._firebaseService.getStories()
+            .subscribe(function (stories) {
             _this.stories = stories;
         });
     };
@@ -824,32 +1082,6 @@ ProseComponent = __decorate([
 ], ProseComponent);
 
 var _a;
-//  OLD export ProseComponent
-// errorMessage: string;
-// stories: any[] = [];
-// /**
-//  * Creates an instance of the ProseComponent with the injected
-//  * ProseComponent.
-//  *
-//  * @param {ProseService} ProseService - The injected ProseComponent.
-//  */
-//   constructor(public proseService: ProseService) {}
-//     /**
-//      * Get the Stories
-//      */
-//     ngOnInit() {
-//       this.getStories();
-//     }
-//     /**
-//      * Handle the proseService observable
-//      */
-//     getStories() {
-//       this.proseService.get()
-//         .subscribe(
-//             stories => this.stories = stories,
-//             error => this.errorMessage = <any>error
-//         );
-//     } 
 //# sourceMappingURL=prose.component.js.map
 
 /***/ }),
@@ -902,9 +1134,8 @@ ProseModule = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FirebaseService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__ = __webpack_require__("../../../../angularfire2/database.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__operators__ = __webpack_require__("../../../../../src/app/operators.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -914,7 +1145,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -929,6 +1159,10 @@ var FirebaseService = (function () {
     FirebaseService.prototype.getStories = function () {
         this.stories = this.db.list('/stories');
         return this.stories;
+    };
+    FirebaseService.prototype.getChapters = function () {
+        this.chapters = this.db.list('/stories/0');
+        return this.chapters;
     };
     return FirebaseService;
 }());
@@ -1016,7 +1250,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host {\n  border: 0 solid #e1e1e1;\n  border-bottom-width: 1px;\n  display: block;\n  height: 48px;\n  padding: 0 16px;\n}\n\nnav a {\n  color: #000000;\n  opacity: .5;\n  font-size: 14px;\n  font-weight: 500;\n  line-height: 48px;\n  margin-right: 20px;\n  text-decoration: none;\n  vertical-align: middle;\n  cursor: pointer;\n}\n\nnav a.router-link-active {\n  color: #106cc8;\n}\n", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -1029,7 +1263,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/shared/navbar/navbar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container bg-default\">\n  <nav class=\"navbar navbar-default\">\n    <div class=\"container-fluid\">\n\n        <ul class=\"nav navbar-nav content-nav-panel\">\n            <li class=\"nav-item\"> \n                  <a [routerLink]=\"['/']\" [routerLinkActive]=\"['router-link-active']\" [routerLinkActiveOptions]=\"{exact:true}\">HOME</a>\n                  </li>\n            <li class=\"nav-item\">\n                <a [routerLink]=\"['/about']\" [routerLinkActive]=\"['router-link-active']\" [routerLinkActiveOptions]=\"{exact:true}\">ABOUT</a>\n            </li>\n            <li class=\"nav-item\">\n                <a [routerLink]=\"['/prose']\" [routerLinkActive]=\"['router-link-active']\" [routerLinkActiveOptions]=\"{exact:true}\">Prose</a>\n            </li>\n        </ul>\n    \n    </div>\n  </nav>\n</div>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n  <div class=\"container-fluid\">\n    <a class=\"navbar-brand\" href=\"#\">\n      <img src=\"/assets/brand/r_logo.svg\" width=\"60\" height=\"60\" alt=\"\">\n    </a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\" aria-controls=\"navbarNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n        <span class=\"navbar-toggler-icon\"></span>\n    </button>\n      <div class=\"collapse navbar-collapse\" id=\"navbarNav\">\n        <ul class=\"nav navbar-nav content-nav-panel\">\n            <!-- <li class=\"nav-item\">\n                  <a class=\"nav-link\" [routerLink]=\"['/']\" [routerLinkActive]=\"['router-link-active']\" [routerLinkActiveOptions]=\"{exact:true}\">HOME</a>\n                  </li> -->\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" [routerLink]=\"['/about']\" [routerLinkActive]=\"['router-link-active']\" [routerLinkActiveOptions]=\"{exact:true}\">About</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" [routerLink]=\"['/prose']\" [routerLinkActive]=\"['router-link-active']\" [routerLinkActiveOptions]=\"{exact:true}\">Prose</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" [routerLink]=\"['/login']\" [routerLinkActive]=\"['router-link-active']\" [routerLinkActiveOptions]=\"{exact:true}\">login</a>\n            </li>\n        </ul>\n      </div>\n  </div>\n</nav>\n"
 
 /***/ }),
 
@@ -1045,6 +1279,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
 /**
  * This class represents the navigation bar component.
@@ -1059,7 +1296,8 @@ NavbarComponent = __decorate([
         selector: 'app-sd-navbar',
         template: __webpack_require__("../../../../../src/app/shared/navbar/navbar.component.html"),
         styles: [__webpack_require__("../../../../../src/app/shared/navbar/navbar.component.css")],
-    })
+    }),
+    __metadata("design:paramtypes", [])
 ], NavbarComponent);
 
 //# sourceMappingURL=navbar.component.js.map
@@ -1184,10 +1422,10 @@ var SharedModule = SharedModule_1 = (function () {
 }());
 SharedModule = SharedModule_1 = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* RouterModule */]],
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */]],
         declarations: [__WEBPACK_IMPORTED_MODULE_4__toolbar_toolbar_component__["a" /* ToolbarComponent */], __WEBPACK_IMPORTED_MODULE_5__navbar_navbar_component__["a" /* NavbarComponent */]],
         exports: [__WEBPACK_IMPORTED_MODULE_4__toolbar_toolbar_component__["a" /* ToolbarComponent */], __WEBPACK_IMPORTED_MODULE_5__navbar_navbar_component__["a" /* NavbarComponent */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* RouterModule */]]
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */]]
     })
 ], SharedModule);
 
